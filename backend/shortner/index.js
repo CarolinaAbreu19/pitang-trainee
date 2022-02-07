@@ -23,6 +23,19 @@ app.get("/api/user/:id", (request, response) => {
   return response.status(404).send({ message: "User not exist" });
 });
 
+app.post("/api/user", (request, response) => {
+  const { email, name } = request.body;
+
+  if(!email || !name) {
+      return response.status(400).send({ message: "Email and Name are required" });  
+  }
+  
+  const user = { id: crypto.randomUUID(), email: email, name: name };
+  users.push(user);
+
+  return response.status(201).send(user);
+});
+
 
 
 app.listen(3000, () => {
