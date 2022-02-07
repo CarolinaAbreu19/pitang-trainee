@@ -36,6 +36,28 @@ app.post("/api/user", (request, response) => {
   return response.status(201).send(user);
 });
 
+app.put("/api/user/:id", (request, response) => {
+  const { id } = request.params;
+  const { name, email } = request.body;
+
+  if(!email || !name) {
+      return response.status(400).send({ message: "Email and Name are required" });  
+  }
+  
+  const userFind = users.find(user => user.id === id);
+  if(!userFind) {
+      return response.status(404).send({ message: "User not found" });
+  }
+
+  userFind.email = email;
+  userFind.name = name;
+
+  return response.status(200).send({
+      message: "User successfully updated",
+      user: userFind
+  });
+});
+
 
 
 app.listen(3000, () => {
