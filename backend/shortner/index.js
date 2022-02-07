@@ -58,7 +58,17 @@ app.put("/api/user/:id", (request, response) => {
   });
 });
 
+app.delete("/api/user/:id", (request, response) => {
+  const { id } = request.params;
 
+  const userFind = users.findIndex(user => user.id === id);
+  if(userFind === -1) {
+      return response.status(404).send({ message: "User not found" });
+  }
+
+  users.splice(userFind, 1);
+  return response.status(200).send({ message: "User successfully deleted"});
+});
 
 app.listen(3000, () => {
   console.log("Server Running on PORT 3000");
